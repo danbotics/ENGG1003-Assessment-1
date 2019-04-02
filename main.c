@@ -19,10 +19,8 @@ printf("Your capitalised string: %s\n", str);
 printf("Your encrypted string: ");
 encrypt(str);
 printf("\n");	
-
 	
-	
-	return 0;
+return 0;
 }
 
 void capitalise(char string[]){
