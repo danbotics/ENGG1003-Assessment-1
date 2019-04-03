@@ -4,38 +4,55 @@ void capitalise(char []);
 void encrypt(char []);
 void decrypt(char []);
 
+int key = 1;
+
 int main() {
 
 char str[1024];
 char encrypted[1024];
-int key = 0;
 int choice = 0;
-
-// Starting menu
 
 printf("-----------------------------------\n");
 printf("ENGG1003 - Programming Assessment 1\n");
 printf("-----------------------------------\n");
 printf("\n");
 printf("Would you like to:\n");
-printf("[1] Encrypt some text\n");
-printf("[2] Decrypt some text\n");
+printf("  [1] Encrypt some text\n");
+printf("  [2] Decrypt some text\n");
 printf("Your choice: ");
-scanf(%d, &choice);
+scanf("%d", &choice);
+getchar();
 
-printf("Enter a string of characters: ");
-fgets(str, sizeof(str), stdin);
-printf("\n");
+switch(choice){
+    case 1:
+    {
+        printf("\n");
+        printf("Enter the text to encrypt (it will be capitalised automatically): ");
+        fgets(str, sizeof(str), stdin);
+        printf("\n");
 
-printf("Your original string: %s\n", str);
+        capitalise(str);
+        printf("Your original text: %s\n", str);
 
-capitalise(str);
-printf("Your capitalised string: %s\n", str);
+        printf("Your encrypted string: ");
+        encrypt(str);
+        printf("\n");
+        break;
+    } 
+    case 2: 
+    {
+        printf("\n");
+        printf("Enter the encrypted text: ");
+        fgets(encrypted, sizeof(encrypted), stdin);
+        printf("\n");
 
-printf("Your encrypted string: ");
-encrypt(str);
-printf("\n");	
-	
+        printf("Decrypted: ");
+        decrypt(encrypted);
+        printf("\n");
+        break;    
+    }
+}
+
 return 0;
 }
 
@@ -57,9 +74,11 @@ void encrypt(char string[]){
     }
 }
 
-void encrypt(char string[]){
+void decrypt(char string[]){
     int i;
     for(i = 0; string[i] != '\0'; i++)
     {
         if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", string[i] - key);
         else printf("%c", string[i]);
+    }
+}
