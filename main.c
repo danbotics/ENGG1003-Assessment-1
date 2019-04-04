@@ -9,6 +9,7 @@ int ekey = 1, dkey = 1;
 int main() {
 
 char str[1024];
+char str_encrypted[1024];
 char encrypted[1024];
 int choice = 0;
 
@@ -76,7 +77,7 @@ void encrypt(char string[]){
     int i;
     for(i = 0; string[i] != '\0'; i++)
     {
-        if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", string[i] + ekey);
+        if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", (string[i] - 'A' + ekey) % 26 + 'A');
         else printf("%c", string[i]);
     }
 }
@@ -85,7 +86,7 @@ void decrypt(char string[]){
     int i;
     for(i = 0; string[i] != '\0'; i++)
     {
-        if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", string[i] - dkey);
+        if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", (string[i] - 'A' -dkey) % 26 + 'A');
         else printf("%c", string[i]);
     }
 }
