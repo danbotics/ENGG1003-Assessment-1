@@ -9,7 +9,6 @@ int ekey = 1, dkey = 1;
 int main() {
 
 char str[1024];
-char str_encrypted[1024];
 char encrypted[1024];
 int choice = 0;
 
