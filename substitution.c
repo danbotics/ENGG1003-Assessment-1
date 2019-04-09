@@ -1,18 +1,19 @@
 #include <stdio.h>
+#include <string.h>
 
 void capitalise(char []);
 void encrypt(char []);
-void decrypt(char []);
+//void decrypt(char []);
+char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+char dkey[1024];
 
 
 int main() {
 
 char str[1024] = "The quick brown fox jumps over the lazy dog";
-char ekey[] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-char dkey[1024];
 
 char encrypted[1024];
-//int choice = 0;
+int choice = 0;
 
 printf("-----------------------------------\n");
 printf("ENGG1003 - Programming Assessment 1\n");
@@ -77,10 +78,12 @@ void capitalise(char string[]){
 
 void encrypt(char string[]){
     int i;
+    //int n;
     for(i = 0; string[i] != '\0'; i++)
     {
-        if(string[i] <= 'Z' && string[i] >= 'A'){
-        printf("%c", (string[i] - 'A' + ekey) % 26 + 'A');
+        if(string[i] <= 'Z' && string[i] >= 'A')
+        {
+            printf("%c", ekey[string[i] - 'A']);
         }
         else printf("%c", string[i]);
     }
@@ -90,7 +93,9 @@ void decrypt(char string[]){
     int i;
     for(i = 0; string[i] != '\0'; i++)
     {
-        if(string[i] <= 'Z' && string[i] >= 'A') printf("%c", (string[i] - 'A' -dkey) % 26 + 'A');
+        if(string[i] <= 'Z' && string[i] >= 'A'){
+        printf("%c", (string[i] - 'A' -dkey) % 26 + 'A');    
+        }
         else printf("%c", string[i]);
     }
 }
