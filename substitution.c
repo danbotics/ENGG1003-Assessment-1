@@ -4,13 +4,13 @@
 void capitalise(char []);
 void encrypt(char []);
 void decrypt(char []);
-char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-char dkey[1024];
+char ekey[26];
+char dkey[26];
 
 
 int main() {
 
-char str[1024] = "The quick brown fox jumps over the lazy dog";
+char input[1024];
 
 char encrypted[1024];
 int choice = 0;
@@ -30,20 +30,19 @@ getchar();
 switch(choice){
     case 1:
     {
-//        printf("\n");
-//        printf("Enter the text to encrypt (it will be capitalised automatically): ");
-//        fgets(str, sizeof(str), stdin);
-//        printf("Substitution cipher key text: ");
-//        fgets(str, sizeof(str), stdin);
-//        getchar();
-//        printf("\n");
+        printf("\n");
+        printf("Enter the text to encrypt (it will be capitalised automatically): ");
+        fgets(input, sizeof(input), stdin);
+        printf("Substitution cipher key text: ");
+        fgets(ekey, sizeof(ekey), stdin);
+        printf("\n");
 
-        capitalise(str);
-        printf("Your original text: %s\n", str);
+        capitalise(input);
+        printf("Your original text: %s\n", input);
         printf("Cipher key text: %s\n", ekey);
 
         printf("Your encrypted string: ");
-        encrypt(str);
+        encrypt(input);
         printf("\n");
         break;
     } 
