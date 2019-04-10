@@ -3,7 +3,7 @@
 
 void capitalise(char []);
 void encrypt(char []);
-//void decrypt(char []);
+void decrypt(char []);
 char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
 char dkey[1024];
 
@@ -90,11 +90,16 @@ void encrypt(char string[]){
 }
 
 void decrypt(char string[]){
-    int i;
+    int i, position;
+    char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    char *positionPointer;
+    
     for(i = 0; string[i] != '\0'; i++)
     {
         if(string[i] <= 'Z' && string[i] >= 'A'){
-        printf("%c", (string[i] - 'A' -dkey) % 26 + 'A');    
+            positionPointer = strchr(dkey, string[i]);
+            position = positionPointer - dkey;
+            printf("%c", alphabet[position]);
         }
         else printf("%c", string[i]);
     }
