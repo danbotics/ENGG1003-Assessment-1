@@ -3,24 +3,25 @@
 
 int main(){
     
-    char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    char encrypted[] = "TVU TVAOTH: AOL KHAH IYVBNOA AV BZ IF AOL IVAOHU ZWPLZ WPUWVPUAZ AOL LEHJA SVJHAPVU VM AOL LTWLYVY'Z ULD IHAASL ZAHAPVU.";
+    FILE *dictionary;
+    char wordtest[1024] = " that this by and you the ";
+    char word[30];
+    int found = 0;
+    char space[5] = " ";
     
-    for(int shift = 1; shift < 26; shift++)
-    {
-        for(int i = 0; encrypted[i] != '\0'; i++)
-        {
-            if(encrypted[i] <= 'Z' && encrypted[i] >= 'A'){
-                if((encrypted[i] - 'A' - shift) >= 0) printf("%c", (encrypted[i] - 'A' - shift) + 'A');
-                else printf("%c", ((encrypted[i] - 'A' - shift) + 26) + 'A');
-            }
-            else printf("%c", encrypted[i]);
+    dictionary = fopen("wordlist.txt", "r");
+    
+    for(int i = 0 ; i < 1000 ; i++){
+        char temp[20] = " ";
+        fscanf(dictionary, "%s", word);
+        strcat(temp, word);
+        strcat(temp, space);
+        if (strstr(wordtest, temp) > 0){
+            found++;
+            printf("%s found in %s\n", word, wordtest);
         }
-    printf("\n");    
     }
-
-    printf("\n");
-//  printf("Element: %d\n", position);
     
+    printf("%d words found!\n", found);
+
 }
