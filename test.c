@@ -15,8 +15,14 @@ int main(){
     char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
     char encrypted[] = " TVU TVAOTH: AOL KHAH IYVBNOA AV BZ IF AOL IVAOHU ZWPLZ WPUWVPUAZ AOL LEHJA SVJHAPVU VM AOL LTWLYVY'Z ULD IHAASL ZAHAPVU. ";
-    char decrypted[strlen(encrypted)-1];
-    // printf("Length of encrypted[]: %d\n", (int)strlen(encrypted));
+    char decrypted[(sizeof(encrypted)-1)];
+    
+    printf("-------------------------\n");
+    printf("Rotation cipher decrytion\n");
+    printf("-------------------------\n");
+    printf("\n");
+    printf("Encrypted text:%s\n\n", encrypted);
+    
     for(int shift = 1; shift < 26; shift++)
     {
         for(int i = 0; encrypted[i] != '\0'; i++)
@@ -40,7 +46,8 @@ int main(){
         }
         //printf("Found: %d\n", found);
         if(found >= 3){
-            printf("%s\n", decrypted);
+            printf("Found cipher key to be: %d\n", shift);
+            printf("Decrypted text:%s\n", decrypted);
             break;
         } else {
             found = 0;
