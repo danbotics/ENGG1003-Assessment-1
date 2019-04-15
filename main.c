@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <string.h>
 
-void capitalise(char []); // Prototype for function that is passed a string and capitalises and lower case letters
-void rEncrypt(char []); // Protype for rotation (Caeser) cipher ENCRYPTION function
-void rDecrypt(char []); // Protype for rotation (Caeser) cipher DECRYPTION function
-void sEncrypt(char []); // Protype for substitution cipher ENCRYPTION function
-void sDecrypt(char []); // Protype for substitution cipher DECRYPTION function
+void capitalise(char string[],); // Prototype for function that is passed a string and capitalises and lower case letters
+void rEncrypt(char string[], int key); // Protype for rotation (Caeser) cipher ENCRYPTION function
+void rDecrypt(char string[], int key); // Protype for rotation (Caeser) cipher DECRYPTION function
+void sEncrypt(char string[], char key[]); // Protype for substitution cipher ENCRYPTION function
+void sDecrypt(char string[], char key); // Protype for substitution cipher DECRYPTION function
 
 int rEkey = 1, rDkey = 1; // Declare and intialise variables to store the keys for encrypting and decrypting rotation ciphers
 char sEkey[26], sDkey[26]; //Declare arrays used to store user specified substitution cipher keys (26 letters in non-standard order)
@@ -46,10 +46,10 @@ int main()
             getchar();
             printf("\n");
 
-            capitalise(inputText); // Change any lower case charaters in user input to upper case
+            capitalise(inputText); // Change any lower case characters in user input to upper case
             printf("Your original text: %s\n", inputText); // Verify user input text (now also capitalised)
 
-            rEncrypt(inputText); // Call function to encrypt using rotation cipher - passed array inputText as argument
+            rEncrypt(inputText, rEkey); // Call function to encrypt using rotation cipher - passed inputText array and integer key as arguments
             printf("Your encrypted string: ");
             printf("%s", encryptedOutput); // Print new encrypted text to console
             break; // Leave switch function
@@ -62,11 +62,11 @@ int main()
             fgets(sEkey, sizeof(sEkey), stdin);
             printf("\n");
 
-            capitalise(inputText); // Change any lower case charaters in user input to upper case
+            capitalise(inputText); // Change any lower case characters in user input to upper case
             printf("Your original text: %s\n", inputText); // Verify user input text (now also capitalised)
             printf("Cipher key text: %s\n\n", sEkey);  // Verify user input cipher key
 
-            sEncrypt(inputText);
+            sEncrypt(inputText, sEkey); // Call function to encrypt using substitution cipher - passed inputText and key arrays as arguments
             printf("Your encrypted string: ");
             printf("%s \n\n", encryptedOutput);  // Print new encrypted text to console
             break; // Leave switch function
