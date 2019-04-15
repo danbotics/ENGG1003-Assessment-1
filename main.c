@@ -80,17 +80,68 @@ int main()
             getchar();
             printf("\n");
 
-            printf("Decrypted: ");
             rDecrypt(encryptedText);
-            printf("%s\n", decryptedOutput);
+            printf("Decrypted: %s\n", decryptedOutput);
             break;
             
         case 4: // DECRYPT USING SUBSTITUTION CIPHER
+            printf("\n");
+            printf("Enter the encrypted text: ");
+            fgets(encryptedText, sizeof(encryptedText), stdin);
+            printf("Substitution cipher key text: ");
+            fgets(sDkey, sizeof(sDkey), stdin);
+            printf("\n");
+            sDecrypt(encryptedText, sDkey);
+            printf("Decrypted: %s\n", decryptedOutput);
+            break;
+        
+        default: // Default case catched any other option not covered by the previous cases
+            printf("That function hasn't been implemented yet - stay tuned!");
+        
     }
 
 return 0;
 }
 
-    
-    
+/*
+CAPITALISE FUNCTION - takes an array then capitalises every lower case letter by looking at each letter and subtracting 32 
+(Changes 'a' (ASCII 97) to 'A' (ASCII 65)
+*/
+void capitalise(char string[])
+{
+    int i;
+    // CAPITALISE string input
+    for(i = 0; string[i] != '\0'; i++)
+    { 
+        // If the letter at string position 'i' is lower case, subtract 32 and write it back to the same position (makes it a capital)
+        if(string[i] <= 'z' && string[i] >= 'a') string[i] = string[i] - 32;
+    }
+}
+
+void rEncrypt(char string[], int key)
+{
+    int i;
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        // If array element 'i' is a capital letter, subtract 'A' from the element, add the key, calculate the result % 26 and add 'A' again
+        // This shifts each letter by the rotation key, assigning the result to encryptedOutput[i] - the % 26 operation allows the digits to
+        // wrap around if already at the end of the alphabet.
+        if(string[i] <= 'Z' && string[i] >= 'A') encryptedOutput[i] = (string[i] - 'A' + key) % 26 + 'A');
+        else encryptedOutput[i] = string[i]; // If array element is not a capital letter, send it straight to output unchanged
+    }
+}
+
+void decrypt(char string[], int key)
+{
+    int i;
+    for(int i = 0; string[i] != '\0'; i++)
+    {
+        if(string[i] <= 'Z' && string[i] >= 'A') // If array element is a letter, continue to decryption - otherwise skip to line 144
+        {
+            // If input array element will be above 0 when decrypted, perform decryption
+            if((string[i] - 'A' - key) >= 0) decryptedOutput[i] = ((string[i] - 'A' - key) + 'A');
+            else decryptedOutput[i] = (((string[i] - 'A' - key) + 26) + 'A'); // If input array element will be below 0, add 26 to make it a positive number
+        }
+        else decryptedOutput[i] = string[i]; // If input array element is NOT a letter, sent it straight to decryptedOutput[i] without modification
+    }
 }

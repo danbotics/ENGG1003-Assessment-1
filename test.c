@@ -17,9 +17,9 @@ int main(){
     char encrypted[] = " TVU TVAOTH: AOL KHAH IYVBNOA AV BZ IF AOL IVAOHU ZWPLZ WPUWVPUAZ AOL LEHJA SVJHAPVU VM AOL LTWLYVY'Z ULD IHAASL ZAHAPVU. ";
     char decrypted[(sizeof(encrypted)-1)];
     
-    printf("-------------------------\n");
-    printf("Rotation cipher decrytion\n");
-    printf("-------------------------\n");
+    printf("--------------------------\n");
+    printf("Rotation cipher decryption\n");
+    printf("--------------------------\n");
     printf("\n");
     printf("Encrypted text:%s\n\n", encrypted);
     
