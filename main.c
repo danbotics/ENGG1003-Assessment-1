@@ -105,7 +105,7 @@ return 0;
 
 /*
 CAPITALISE FUNCTION - takes an array then capitalises every lower case letter by looking at each letter and subtracting 32 
-(Changes 'a' (ASCII 97) to 'A' (ASCII 65)
+(Changes 'a' (ASCII 97) to 'A' (ASCII 65).
 */
 void capitalise(char string[])
 {
@@ -118,6 +118,10 @@ void capitalise(char string[])
     }
 }
 
+/*
+ROTATION ENCRYPT FUNCTION - takes an array containing a plain text string and an integer 'key' - it shifts the letter in each element up
+the alphabet by however many positions specified by the 'key' integer. The encrypted text is stored in another array, encryptedOutput[].
+*/
 void rEncrypt(char string[], int key)
 {
     int i;
@@ -131,7 +135,31 @@ void rEncrypt(char string[], int key)
     }
 }
 
-void decrypt(char string[], int key)
+/*
+SUBSTITUTION ENCRYPTION FUNCTION - takes an array containing a plain text string and another array containing the substitution 'key' (26 unique
+capital letters in a non-standard order). The function inspects each element of the input string, converts the letter to a number between 0 and
+25 then outputs that numbered element in key string. The encrypted text is stored in another array, encryptedOutput[].
+*/
+void sEncrypt(char string[], char sEkey)
+{
+    int i;
+    for(i = 0; string[i] != '\0'; i++)
+    {
+        if(string[i] <= 'Z' && string[i] >= 'A')
+        {
+            encryptedOutput[i] = sEkey[string[i] - 'A'];
+            
+        } else encryptedOutput[i] = string[i];
+    }
+}
+
+/*
+ROTATION CIPHER DECRYPTION FUNCTION - takes an array containing a string of text encrypted using a rotation cipher and a integer 'key'. The 
+function inspects each letter in the input array then shifts them down the alphabet by however many positions specified by the 'key' integer. There
+is a special case for situations where the decryption would result in a negative number - 26 is added to the number in this case to make it positive
+again.
+*/
+void rDecrypt(char string[], int key)
 {
     int i;
     for(int i = 0; string[i] != '\0'; i++)
