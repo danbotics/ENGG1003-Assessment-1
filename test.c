@@ -1,20 +1,19 @@
 #include <stdio.h>
 #include <string.h>
 
+void capitalise(char string[]);
+
 int main(){
-    
-    void capitalise(char string[]);
-    
     FILE *dictionary;
     dictionary = fopen("wordlist.txt", "r");
     
     char word[30];
     int found = 0;
-    char space[5] = " ";
+    char space[3] = " ";
     
     char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     char ekey[26] = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    char encrypted[] = " TVU TVAOTH: AOL KHAH IYVBNOA AV BZ IF AOL IVAOHU ZWPLZ WPUWVPUAZ AOL LEHJA SVJHAPVU VM AOL LTWLYVY'Z ULD IHAASL ZAHAPVU. ";
+    char encrypted[] = " SJSFMPCRM WG O USBWIG. PIH WT MCI XIRUS O TWGV PM WHG OPWZWHM HC QZWAP O HFSS, WH KWZZ ZWJS WHG KVCZS ZWTS PSZWSJWBU HVOH WH WG GHIDWR. - OZPSFH SWBGHSWB ";
     char decrypted[(sizeof(encrypted)-1)];
     
     printf("--------------------------\n");

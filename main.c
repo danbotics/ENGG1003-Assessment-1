@@ -6,6 +6,7 @@ void rEncrypt(char string[], int key); // Protype for rotation (Caeser) cipher E
 void rDecrypt(char string[], int key); // Protype for rotation (Caeser) cipher DECRYPTION function
 void sEncrypt(char string[], char key[]); // Protype for substitution cipher ENCRYPTION function
 void sDecrypt(char string[], char key[]); // Protype for substitution cipher DECRYPTION function
+int breakRotation(char string[]); // Protype for rotation cipher breaking function (decrypt without key) - returns successful integer shift found
 
 int rEkey = 1, rDkey = 1; // Declare and intialise variables to store the keys for encrypting and decrypting rotation ciphers
 char sEkey[26], sDkey[26]; //Declare arrays used to store user specified substitution cipher keys (26 letters in non-standard order)
@@ -93,7 +94,15 @@ int main()
             sDecrypt(encryptedText, sDkey);
             printf("Decrypted: %s\n\n", decryptedOutput);
             break;
-        
+            
+        case 5: // BREAK ROTATION CIPHER (WITHOUT KEY)
+            printf("\n");
+            printf("Enter the encrypted text: ");
+            fgets(encryptedText, sizeof(encryptedText), stdin);
+            printf("\nFound rotation cipher key: %d\n", breakRotation(encryptedText));
+            printf("Decrypted: %s\n\n", decryptedOutput);
+            break;
+            
         default: // Default case catched any other option not covered by the previous cases
             printf("\nThat function hasn't been implemented yet - stay tuned!\n\n");
         
@@ -191,4 +200,51 @@ void sDecrypt(char string[], char key[])
         }
         else decryptedOutput[i] = string[i];
     }
+}
+
+int breakRotation(char string[])
+{
+    FILE *dictionary;
+    dictionary = fopen("wordlist.txt", "r");
+    
+    int found = 0;
+    char word[30];
+    char space[3] = " ";    
+    char alphabet[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    for(int shift = 1; shift < 26; shift++)
+    {
+        for(int i = 0; encryptedText[i] != '\0'; i++)
+        {
+            if(encryptedText[i] <= 'Z' && encryptedText[i] >= 'A')
+            {
+                if((encryptedText[i] - 'A' - shift) >= 0) decryptedOutput[i] = ((encryptedText[i] - 'A' - shift) + 'A');
+                else decryptedOutput[i] = (((encryptedText[i] - 'A' - shift) + 26) + 'A');
+            }
+            else decryptedOutput[i] = encryptedText[i];
+        }
+
+        for(int n = 0 ; n < 1000 ; n++)
+        {
+            char temp[20] = " "; // Create a new temporary array to store the word to be checked in the decypted output (to check for success) - starts as 1 'space' character
+            fscanf(dictionary, "%s", word); // Pull a string (a word) from the dictionary text file
+            capitalise(word); // Capitalise the word from the dictionary file (because the decrypted text is capitalised)
+            strcat(temp, word); // Append the dictionary word to the end of the 'temp' array
+            strcat(temp, space); // Append another space character to the end of the 'temp' array - this creates an array containing the dictionary word with a space either side
+            //printf("Search: %s ", temp);
+            if (strstr(decryptedOutput, temp) != 0) found++; // If the dictionary word is found anywhere in the decrypted string, increase the 'found' integer by 1
+        }
+
+        if(found >= 3) // If more than 3 words from the dictionary file match words in the decrypted output, the decryption was a success
+        {
+            // printf("Found cipher key to be: %d\n", shift);
+            // printf("Decrypted text:%s\n", decrypted);
+            return shift; // Return the successful rotation cipher key (shift) to the main function
+        } 
+        else // 3 or less matches in the dictionary file, decryption was likely unsuccessful - reset everything to before trying the next possible key shift
+        {
+            found = 0; // Reset the found word counter to 0
+            fseek(dictionary, 0, SEEK_SET); // Reset the seek position in the dictionary file to 0 - ready to start searching again with a new key shift
+        }
+     }    
 }
