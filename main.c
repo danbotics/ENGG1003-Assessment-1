@@ -20,6 +20,10 @@ int main()
 {
     int choice = 0; // Variable to store choice in menu system
     
+    FILE *input;
+    FILE *output;
+    output = fopen("output.txt", "w");
+    
     // Menu System for function selection
     printf("-----------------------------------\n");    
     printf("ENGG1003 - Programming Assessment 1\n");    
@@ -40,9 +44,11 @@ int main()
     switch(choice)
     {
         case 1: // ENCRYPT USING ROTATION CIPHER
+            input = fopen("input.txt", "r");
             printf("\n");
             printf("Enter the text to encrypt (it will be capitalised automatically): ");
-            fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted
+            //fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted
+            fscanf(input, "%s", inputText);
             printf("Rotation cipher key: ");
             scanf("%d", &rEkey); // User inputs desired rotation cipher key (amount to shift letters by)
             getchar();
@@ -52,6 +58,12 @@ int main()
             printf("Your original text: %s\n", inputText); // Verify user input text (now also capitalised)
 
             rEncrypt(inputText, rEkey); // Call function to encrypt using rotation cipher - passed inputText array and integer key as arguments
+            fprintf(output, "----------\n");    
+            fprintf(output, "DECRYPTION\n");    
+            fprintf(output, "----------\n\n"); 
+            fprintf(output, "Original:  %s\n", encryptedText);
+            fprintf(output, "Key: %d\n", rDkey);
+            fprintf(output, "Decrypted: %s", decryptedOutput);
             printf("Your encrypted string: %s \n\n", encryptedOutput); // Print new encrypted text to console
             break; // Leave switch function
             
@@ -81,6 +93,12 @@ int main()
             printf("\n");
 
             rDecrypt(encryptedText, rDkey);
+            fprintf(output, "----------\n");    
+            fprintf(output, "DECRYPTION\n");    
+            fprintf(output, "----------\n\n"); 
+            fprintf(output, "Original:  %s\n", encryptedText);
+            fprintf(output, "Key: %d\n", rDkey);
+            fprintf(output, "Decrypted: %s", decryptedOutput);
             printf("Decrypted: %s\n\n", decryptedOutput);
             break;
             
@@ -91,7 +109,14 @@ int main()
             printf("Substitution cipher key text: ");
             fgets(sDkey, sizeof(sDkey), stdin);
             printf("\n");
+            printf("Entered key: %s\n", sDkey);
             sDecrypt(encryptedText, sDkey);
+            fprintf(output, "----------\n");    
+            fprintf(output, "DECRYPTION\n");    
+            fprintf(output, "----------\n\n"); 
+            fprintf(output, "Original:  %s\n", encryptedText);
+            fprintf(output, "Key: %s\n", sDkey);
+            fprintf(output, "Decrypted: %s", decryptedOutput);
             printf("Decrypted: %s\n\n", decryptedOutput);
             break;
             
