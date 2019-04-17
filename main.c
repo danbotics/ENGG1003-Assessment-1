@@ -44,11 +44,34 @@ int main()
     switch(choice)
     {
         case 1: // ENCRYPT USING ROTATION CIPHER
-            input = fopen("input.txt", "r");
-            printf("\n");
-            printf("Enter the text to encrypt (it will be capitalised automatically): ");
-            //fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted
-            fscanf(input, "%s", inputText);
+            choice = 0;
+            printf("\n");            
+            printf("Your choices are:\n");                     
+            printf("  [1] Manually enter text to be encrypted\n");                
+            printf("  [2] Encrypt text from a file (plainInput.txt)\n");
+            printf("\n");            
+            printf("Which would you like?: ");                            
+            scanf("%d", &choice);
+            getchar();
+            switch(choice)
+            {
+                case 1:
+                    printf("Enter the text to encrypt (it will be capitalised automatically): ");
+                    fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted                
+                    break;
+                case 2:
+                    input = fopen("plainInput.txt", "r");
+                    printf("\n");            
+                    printf("[LOADING INPUT FROM TEXT FILE]\n");
+                    while(feof(input) == 0)
+                    {
+                        fgets(inputText, 1024, input);
+                        printf("%s", inputText);
+                    }
+                    printf("\n[LOADING COMPLETE]\n");
+                    break;
+            }
+            printf("\n");            
             printf("Rotation cipher key: ");
             scanf("%d", &rEkey); // User inputs desired rotation cipher key (amount to shift letters by)
             getchar();
@@ -59,11 +82,11 @@ int main()
 
             rEncrypt(inputText, rEkey); // Call function to encrypt using rotation cipher - passed inputText array and integer key as arguments
             fprintf(output, "----------\n");    
-            fprintf(output, "DECRYPTION\n");    
+            fprintf(output, "ENCRYPTION\n");    
             fprintf(output, "----------\n\n"); 
-            fprintf(output, "Original:  %s\n", encryptedText);
-            fprintf(output, "Key: %d\n", rDkey);
-            fprintf(output, "Decrypted: %s", decryptedOutput);
+            fprintf(output, "Original:  %s\n", inputText);
+            fprintf(output, "Key: %d\n", rEkey);
+            fprintf(output, "Decrypted: %s", encryptedOutput);
             printf("Your encrypted string: %s \n\n", encryptedOutput); // Print new encrypted text to console
             break; // Leave switch function
             
