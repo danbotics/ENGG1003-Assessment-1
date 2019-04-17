@@ -84,26 +84,57 @@ int main()
             fprintf(output, "----------\n");    
             fprintf(output, "ENCRYPTION\n");    
             fprintf(output, "----------\n\n"); 
-            fprintf(output, "Original:  %s\n", inputText);
             fprintf(output, "Key: %d\n", rEkey);
-            fprintf(output, "Decrypted: %s", encryptedOutput);
+            fprintf(output, "Original:  %s\n", inputText);
+            fprintf(output, "Encrypted: %s", encryptedOutput);
             printf("Your encrypted string: %s \n\n", encryptedOutput); // Print new encrypted text to console
             break; // Leave switch function
             
         case 2: // ENCRYPT USING SUBSTITUTION CIPHER
-            printf("\n");
-            printf("Enter the text to encrypt (it will be capitalised automatically): ");
-            fgets(inputText, sizeof(inputText), stdin);
+            choice = 0;
+            printf("\n");            
+            printf("Your choices are:\n");                     
+            printf("  [1] Manually enter text to be encrypted\n");                
+            printf("  [2] Encrypt text from a file (plainInput.txt)\n");
+            printf("\n");            
+            printf("Which would you like?: ");                            
+            scanf("%d", &choice);
+            getchar();
+            switch(choice)
+            {
+                case 1:
+                    printf("Enter the text to encrypt (it will be capitalised automatically): ");
+                    fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted                
+                    break;
+                case 2:
+                    input = fopen("plainInput.txt", "r");
+                    printf("\n");            
+                    printf("[LOADING INPUT FROM TEXT FILE]\n");
+                    while(feof(input) == 0)
+                    {
+                        fgets(inputText, 1024, input);
+                        printf("%s", inputText);
+                    }
+                    printf("\n[LOADING COMPLETE]\n");
+                    break;
+            }
+            printf("\n");   
             printf("Substitution cipher key text: ");
             fgets(sEkey, sizeof(sEkey), stdin);
             printf("\n");
 
             capitalise(inputText); // Change any lower case characters in user input to upper case
-            printf("Your original text: %s\n", inputText); // Verify user input text (now also capitalised)
+            printf("Your original text:\n%s\n", inputText); // Verify user input text (now also capitalised)
             printf("Cipher key text: %s\n\n", sEkey);  // Verify user input cipher key
 
             sEncrypt(inputText, sEkey); // Call function to encrypt using substitution cipher - passed inputText and key arrays as arguments
-            printf("Your encrypted string: %s \n\n", encryptedOutput);  // Print new encrypted text to console
+            fprintf(output, "----------\n");    
+            fprintf(output, "ENCRYPTION\n");    
+            fprintf(output, "----------\n\n"); 
+            fprintf(output, "Key: %s\n", sEkey);
+            fprintf(output, "Original:  %s\n", inputText);
+            fprintf(output, "Encrypted: %s", encryptedOutput);            
+            printf("Your encrypted string:\n%s \n\n", encryptedOutput);  // Print new encrypted text to console
             break; // Leave switch function
             
         case 3: // DECRYPT USING ROTATION CIPHER
