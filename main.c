@@ -22,7 +22,12 @@ int main()
     
     FILE *input;
     FILE *output;
-    output = fopen("output.txt", "w");
+    output = fopen("output.txt", "w"); // Open 'output.txt' file for writing
+    if(output == NULL)
+    {
+        perror("fopen()");
+        return 0;
+    }
     
     // Menu System for function selection
     printf("-----------------------------------\n");    
@@ -60,12 +65,17 @@ int main()
                     fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted                
                     break;
                 case 2:
-                    input = fopen("plainInput.txt", "r");
+                    input = fopen("plainInput.txt", "r"); // Open 'plainInput.txt' for reading
+                    if(input == NULL)
+                    {
+                        perror("fopen()");
+                        return 0;
+                    }
                     printf("\n");            
                     printf("[LOADING INPUT FROM TEXT FILE]\n");
                     while(feof(input) == 0)
                     {
-                        fgets(inputText, 1024, input);
+                        fgets(inputText, 1024, input); // Read text in file and store in 'inputText' array
                         printf("%s", inputText);
                     }
                     printf("\n[LOADING COMPLETE]\n");
@@ -81,12 +91,12 @@ int main()
             printf("Your original text: %s\n", inputText); // Verify user input text (now also capitalised)
 
             rEncrypt(inputText, rEkey); // Call function to encrypt using rotation cipher - passed inputText array and integer key as arguments
-            fprintf(output, "----------\n");    
-            fprintf(output, "ENCRYPTION\n");    
-            fprintf(output, "----------\n\n"); 
-            fprintf(output, "Key: %d\n", rEkey);
-            fprintf(output, "Original:  %s\n", inputText);
-            fprintf(output, "Encrypted: %s", encryptedOutput);
+            fprintf(output, "----------\n");                           //-|
+            fprintf(output, "ENCRYPTION\n");                           // |
+            fprintf(output, "----------\n\n");                         // |-- Output encrypted text to external file (output.txt)
+            fprintf(output, "Key: %d\n", rEkey);                       // |
+            fprintf(output, "Original:  %s\n", inputText);             // |
+            fprintf(output, "Encrypted: %s", encryptedOutput);         //-|
             printf("Your encrypted string: %s \n\n", encryptedOutput); // Print new encrypted text to console
             break; // Leave switch function
             
@@ -107,12 +117,17 @@ int main()
                     fgets(inputText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted                
                     break;
                 case 2:
-                    input = fopen("plainInput.txt", "r");
+                    input = fopen("plainInput.txt", "r"); // Open 'plainInput.txt' for reading
+                    if(input == NULL)
+                    {
+                        perror("fopen()");
+                        return 0;
+                    }                    
                     printf("\n");            
                     printf("[LOADING INPUT FROM TEXT FILE]\n");
                     while(feof(input) == 0)
                     {
-                        fgets(inputText, 1024, input);
+                        fgets(inputText, 1024, input); // Read text in file and store in 'inputText' array
                         printf("%s", inputText);
                     }
                     printf("\n[LOADING COMPLETE]\n");
@@ -128,42 +143,104 @@ int main()
             printf("Cipher key text: %s\n\n", sEkey);  // Verify user input cipher key
 
             sEncrypt(inputText, sEkey); // Call function to encrypt using substitution cipher - passed inputText and key arrays as arguments
-            fprintf(output, "----------\n");    
-            fprintf(output, "ENCRYPTION\n");    
-            fprintf(output, "----------\n\n"); 
-            fprintf(output, "Key: %s\n", sEkey);
-            fprintf(output, "Original:  %s\n", inputText);
-            fprintf(output, "Encrypted: %s", encryptedOutput);            
+            fprintf(output, "----------\n");                            //-|
+            fprintf(output, "ENCRYPTION\n");                            // |
+            fprintf(output, "----------\n\n");                          // |-- Output encrypted text to external file (output.txt)
+            fprintf(output, "Key: %s\n", sEkey);                        // |
+            fprintf(output, "Original:  %s\n", inputText);              // |
+            fprintf(output, "Encrypted: %s", encryptedOutput);          //-|
             printf("Your encrypted string:\n%s \n\n", encryptedOutput);  // Print new encrypted text to console
             break; // Leave switch function
             
         case 3: // DECRYPT USING ROTATION CIPHER
+            choice = 0;
+            printf("\n");            
+            printf("Your choices are:\n");                     
+            printf("  [1] Manually enter encrypted text to be decrypted\n");                
+            printf("  [2] Decrypt text from a file (encryptedInput.txt)\n");
+            printf("\n");            
+            printf("Which would you like?: ");                            
+            scanf("%d", &choice);
+            getchar();
+            switch(choice)
+            {
+                case 1:
+                    printf("Enter the text to encrypt (it will be capitalised automatically): ");
+                    fgets(encryptedText, sizeof(inputText), stdin); // Capture plain text string from user input (stdin) to be encrypted                
+                    break;
+                case 2:
+                    input = fopen("encryptedInput.txt", "r"); // Open 'encryptedInput.txt' for reading
+                    if(input == NULL)
+                    {
+                        perror("fopen()");
+                        return 0;
+                    }                    
+                    printf("\n");            
+                    printf("[LOADING INPUT FROM TEXT FILE]\n");
+                    while(feof(input) == 0)
+                    {
+                        fgets(encryptedText, 1024, input); // Read text in file and store in 'encryptedText' array
+                        printf("%s", encryptedText);
+                    }
+                    printf("\n[LOADING COMPLETE]\n");
+                    break;
+            }
             printf("\n");
-            printf("Enter the encrypted text: ");
-            fgets(encryptedText, sizeof(encryptedText), stdin);
             printf("Rotation cipher key: ");
             scanf("%d", &rDkey);
             getchar();
             printf("\n");
-
-            rDecrypt(encryptedText, rDkey);
-            fprintf(output, "----------\n");    
-            fprintf(output, "DECRYPTION\n");    
-            fprintf(output, "----------\n\n"); 
-            fprintf(output, "Original:  %s\n", encryptedText);
-            fprintf(output, "Key: %d\n", rDkey);
-            fprintf(output, "Decrypted: %s", decryptedOutput);
-            printf("Decrypted: %s\n\n", decryptedOutput);
+            
+            capitalise(encryptedText); // Capitalise input text if required
+            rDecrypt(encryptedText, rDkey); // Call function to decrypt using rotation cipher - passed encryptedText array and key integer as arguments
+            fprintf(output, "----------\n");                        //-|
+            fprintf(output, "DECRYPTION\n");                        // |
+            fprintf(output, "----------\n\n");                      // |-- Output decrypted text to external file (output.txt)
+            fprintf(output, "Original:  %s\n", encryptedText);      // |
+            fprintf(output, "Key: %d\n", rDkey);                    // |
+            fprintf(output, "Decrypted: %s", decryptedOutput);      //-|
+            printf("Decrypted: %s\n\n", decryptedOutput); // Print new decrypted text to console
             break;
             
         case 4: // DECRYPT USING SUBSTITUTION CIPHER
+            choice = 0;
+            printf("\n");            
+            printf("Your choices are:\n");                     
+            printf("  [1] Manually enter encrypted text to be decrypted\n");                
+            printf("  [2] Decrypt text from a file (encryptedInput.txt)\n");
+            printf("\n");            
+            printf("Which would you like?: ");                            
+            scanf("%d", &choice);
+            getchar();
+            switch(choice)
+            {
+                case 1: // MANUALLY ENTER TEXT TO BE DECRYPTED
+                    printf("Enter the text to encrypt (it will be capitalised automatically): ");
+                    fgets(encryptedText, sizeof(inputText), stdin); // Capture encrypted text string from user input (stdin) to be decrypted
+                    break;
+                case 2: // DECRYPT TEXT FROM FILE (encryptedInput.txt)
+                    input = fopen("encryptedInput.txt", "r"); // Open 'encryptedInput.txt' for reading
+                    if(input == NULL)
+                    {
+                        perror("fopen()");
+                        return 0;
+                    }                    
+                    printf("\n");            
+                    printf("[LOADING INPUT FROM TEXT FILE]\n");
+                    while(feof(input) == 0)
+                    {
+                        fgets(encryptedText, 1024, input); // Read text in file and store in 'encryptedText' array
+                        printf("%s", encryptedText);
+                    }
+                    printf("\n[LOADING COMPLETE]\n");
+                    break;
+            }
             printf("\n");
-            printf("Enter the encrypted text: ");
-            fgets(encryptedText, sizeof(encryptedText), stdin);
             printf("Substitution cipher key text: ");
             fgets(sDkey, sizeof(sDkey), stdin);
             printf("\n");
             printf("Entered key: %s\n", sDkey);
+            capitalise(encryptedText);            
             sDecrypt(encryptedText, sDkey);
             fprintf(output, "----------\n");    
             fprintf(output, "DECRYPTION\n");    
@@ -175,11 +252,49 @@ int main()
             break;
             
         case 5: // BREAK ROTATION CIPHER (WITHOUT KEY)
+            choice = 0;
+            printf("\n");            
+            printf("Your choices are:\n");                     
+            printf("  [1] Manually enter encrypted text to be cracked\n");                
+            printf("  [2] Decrypt text from a file (encryptedInput.txt)\n");
+            printf("\n");            
+            printf("Which would you like?: ");                            
+            scanf("%d", &choice);
+            getchar();
+            switch(choice)
+            {
+                case 1: // MANUALLY ENTER ENCRYPTED TEXT TO BE CRACKED
+                    printf("Enter the text to encrypt (it will be capitalised automatically): ");
+                    fgets(encryptedText, sizeof(inputText), stdin); // Capture encrypted text string from user input (stdin) to be decrypted
+                    break;
+                case 2: // DECRYPT TEXT FROM FILE (encryptedInput.txt)
+                    input = fopen("encryptedInput.txt", "r"); // Open 'encryptedInput.txt' for reading
+                    if(input == NULL)
+                    {
+                        perror("fopen()");
+                        return 0;
+                    }                    
+                    printf("\n");            
+                    printf("[LOADING INPUT FROM TEXT FILE]\n");
+                    while(feof(input) == 0)
+                    {
+                        fgets(encryptedText, 1024, input); // Read text in file and store in 'encryptedText' array
+                        printf("%s", encryptedText);
+                    }
+                    printf("\n[LOADING COMPLETE]\n");
+                    break;
+            }
             printf("\n");
-            printf("Enter the encrypted text: ");
-            fgets(encryptedText, sizeof(encryptedText), stdin);
-            printf("\nFound rotation cipher key: %d\n", breakRotation(encryptedText));
-            printf("Decrypted: %s\n\n", decryptedOutput);
+            capitalise(encryptedText);            
+            rDkey = breakRotation(encryptedText);
+            printf("\nFound rotation cipher key: %d\n", rDkey); // Print successful cipher key to console
+            fprintf(output, "----------\n");                        //-|
+            fprintf(output, "DECRYPTION\n");                        // |
+            fprintf(output, "----------\n\n");                      // |-- Output decrypted text to external file (output.txt)
+            fprintf(output, "Original:  %s\n", encryptedText);      // |
+            fprintf(output, "Key: %d\n", rDkey);                    // |
+            fprintf(output, "Decrypted: %s", decryptedOutput);      //-|
+            printf("Decrypted: %s\n\n", decryptedOutput); // Print decrypted text to console
             break;
             
         default: // Default case catched any other option not covered by the previous cases
@@ -232,11 +347,11 @@ void sEncrypt(char string[], char key[])
     int i;
     for(i = 0; string[i] != '\0'; i++)
     {
-        if(string[i] <= 'Z' && string[i] >= 'A')
+        if(string[i] <= 'Z' && string[i] >= 'A') // If element being inspected is a letter between A and Z
         {
-            encryptedOutput[i] = key[string[i] - 'A'];
+            encryptedOutput[i] = key[string[i] - 'A']; // Turn the letter into a number between 0 and 25 then return that element from the key array
             
-        } else encryptedOutput[i] = string[i];
+        } else encryptedOutput[i] = string[i]; // If the element is not a letter, sent it straight to the output unchanged
     }
 }
 
@@ -272,7 +387,7 @@ void sDecrypt(char string[], char key[])
         if(string[i] <= 'Z' && string[i] >= 'A'){
             positionPointer = strchr(key, string[i]); // Search for the character string[i] in the key[] array and return a pointer to the first element found
             
-            // Subtract the pointer address to the start of key[] from the address stored in *positionPointer - this gives the element position (0 - 25) where
+            // Subtract the pointer address to the start of key[] from the address stored in 'positionPointer' - this gives the element position (0 - 25) where
             // the character string[i] can be found in key[]
             position = positionPointer - key; 
             decryptedOutput[i] = alphabet[position]; // Outputs the specified position in the alphabet array - this will be the original letter for the given key.
